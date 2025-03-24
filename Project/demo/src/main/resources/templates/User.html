@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form > * {
+            margin: 5px;
+            padding: 5px;
+        }
+        .error {
+            color: red;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid red;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>User Registration and Login</h1>
+
+<div class="error" th:if="${error}" th:text="${error}"></div>
+
+<h2>Register</h2>
+<form action="/users/register" method="post">
+    <div>
+        <label for="name">Username:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+<h2>Login</h2>
+<form action="/users/login" method="post">
+    <div>
+        <label for="loginName">Username:</label>
+        <input type="text" id="loginName" name="name" required>
+    </div>
+    <div>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" required>
+    </div>
+    <button type="submit">Login</button>
+</form>
+</body>
+</html>

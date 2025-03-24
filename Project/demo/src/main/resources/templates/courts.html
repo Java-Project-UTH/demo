@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pickleball Courts</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>Pickleball Courts</h1>
+        
+        <div class="add-court-form">
+            <h2>Add New Court</h2>
+            <form th:action="@{/courts}" method="post">
+                <div class="form-group">
+                    <label for="name">Court Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <button type="submit" class="btn">Add Court</button>
+            </form>
+        </div>
+
+        <div class="courts-list">
+            <h2>Available Courts</h2>
+            <div class="court-grid">
+                <div th:each="court : ${courts}" class="court-card">
+                    <h3 th:text="${court.name}">Court Name</h3>
+                    <p th:text="${court.location}">Location</p>
+                    <p class="status" th:text="${court.available ? 'Available' : 'Booked'}">Status</p>
+                    <a th:if="${court.available}" th:href="@{/bookings/court/{id}(id=${court.id})}" class="btn">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

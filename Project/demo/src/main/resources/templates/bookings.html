@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Court Bookings</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form > * {
+            margin: 5px;
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Court Bookings</h1>
+    
+    <div th:if="${error}" style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; border-radius: 5px;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <h2>Create New Booking</h2>
+    <form action="/bookings/add" method="post">
+        <div>
+            <label for="courtId">Select Court:</label>
+            <select id="courtId" name="courtId" required>
+                <option value="">-- Select a court --</option>
+                <option th:each="court : ${courts}" 
+                        th:value="${court.id}"
+                        th:text="${court.name + ' (' + court.location + ')'}"
+                        th:disabled="${!court.available}">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label for="startTime">Start Time:</label>
+            <input type="datetime-local" id="startTime" name="startTime" required>
+        </div>
+
+        <div>
+            <label for="endTime">End Time:</label>
+            <input type="datetime-local" id="endTime" name="endTime" required>
+        </div>
+
+        <div>
+            <label for="userEmail">Email:</label>
+            <input type="email" id="userEmail" name="userEmail" required placeholder="Enter your email">
+        </div>
+
+        <button type="submit">Book Court</button>
+    </form>
+
+    <h2>Current Bookings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Court Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>User Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.court.name}"></td>
+                <td th:text="${#temporals.format(booking.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(booking.endTime, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${booking.userEmail}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

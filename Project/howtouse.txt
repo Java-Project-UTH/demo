@@ -1,0 +1,38 @@
+
+tải maven về
+- Go to: https://maven.apache.org/download.cgi
+- Download the Binary zip archive (apache-maven-x.x.x-bin.zip)
+
+
+Set up environment variables:
+
+- Open System Properties (Right-click on 'This PC' -> Properties)
+- Click on 'Advanced system settings'
+- Click 'Environment Variables'
+- Under 'System variables', find and select 'Path'
+- Click 'Edit'
+- Click 'New'
+- Add the path to Maven's bin directory (e.g., C:\Program Files\Apache\maven\bin )
+- Click 'OK' on all windows
+
+run this in terminal
+make sure you move run this path in \demoproject\demo
+mvn -version
+mvn clean install
+mvn spring-boot:run
+after run all is will appear http://localhost:8080
+
+how to use h2 database
+http://localhost:8080/h2-console
+(h2 database thích hợp ở giai đoạn phát triển cần thử nghiệm nhanh các tính năng)
+Sau này: Chuyển sang MySQL khi:
+Ứng dụng hoàn thiện và cần triển khai thực tế.
+Có nhu cầu lưu trữ dữ liệu lâu dài hoặc phục vụ nhiều người dùng.
+
+
+Thông tin đăng nhập h2 database:
+
+- JDBC URL: jdbc:h2:mem:testdb
+- Username: sa
+- Password: (để trống)
+
