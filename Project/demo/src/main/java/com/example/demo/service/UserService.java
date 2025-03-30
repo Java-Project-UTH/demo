@@ -12,13 +12,22 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public User registerUser(User user) {
-        return userRepository.save(user);
+    public void register(RegisterRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("USER");
+        userRepository.save(user);
     }
 
-    public Optional<User> loginUser(String name, String password) {
-        return userRepository.findByName(name)
-                .filter(user -> user.getPassword().equals(password));
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        if (passwordEncoder.matches(password, user.getPassword())) return user;
+        else throw new BadCredentialsException("Invalid password");
     }
 }
