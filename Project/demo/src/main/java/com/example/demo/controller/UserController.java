@@ -1,12 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -16,15 +15,22 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User savedUser = userService.registerUser(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest request) {
+        try {
+            userService.register(request);
+            return ResponseEntity.ok("Registration successful!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestParam String name, @RequestParam String password) {
-        Optional<User> user = userService.loginUser(name, password);
-        return user.map(value -> ResponseEntity.ok("Login Successful!"))
-                .orElseGet(() -> ResponseEntity.status(401).body("Invalid credentials"));
+    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
+        try {
+            User user = userService.authenticate(email, password);
+            return ResponseEntity.ok("Login successful!");
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Login failed: " + e.getMessage());
+        }
     }
 }
