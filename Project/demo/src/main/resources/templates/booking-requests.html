@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Booking Requests</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .approve {
+            background-color: green;
+        }
+        .reject {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Booking Requests</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>User Email</th>
+                <th>Court Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="request : ${requests}">
+                <td th:text="${request.userEmail}"></td>
+                <td th:text="${request.courtName}"></td>
+                <td th:text="${#temporals.format(request.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(request.endTime, 'dd-MM-yyyy HH:mm')}"></td>
+                <td class="actions">
+                    <a th:href="@{/bookings/approve/{id}(id=${request.id})}" class="approve">Approve</a>
+                    <a th:href="@{/bookings/reject/{id}(id=${request.id})}" class="reject">Reject</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+

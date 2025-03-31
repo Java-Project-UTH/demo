@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <title>Inventory Management</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    form { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+  </style>
+</head>
+<body>
+<h1>Inventory Management</h1>
+<form action="/inventory/add" method="post">
+  <label>Product Name: <input type="text" name="productName" required></label>
+  <label>Quantity: <input type="number" name="quantity" required></label>
+  <button type="submit">Add Product</button>
+</form>
+
+<table>
+  <thead>
+  <tr><th>Product Name</th><th>Quantity</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${inventory}">
+    <td th:text="${item.itemName}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td>
+      <a th:href="@{/inventory/edit/{id}(id=${item.id})}">Edit</a>
+      <a th:href="@{/inventory/delete/{id}(id=${item.id})}">Delete</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
+

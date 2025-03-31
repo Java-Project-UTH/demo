@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Court;
 import com.example.demo.repository.CourtRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/courts")
 public class CourtController {
 
-    @Autowired
-    private CourtRepository courtRepository;
+    private final CourtRepository courtRepository;
+
+    // ✅ Constructor Injection (Best Practice)
+    public CourtController(CourtRepository courtRepository) {
+        this.courtRepository = courtRepository;
+    }
 
     @GetMapping
     public String listCourts(Model model) {

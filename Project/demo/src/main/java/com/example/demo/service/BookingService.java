@@ -4,20 +4,20 @@ import com.example.demo.model.Booking;
 import com.example.demo.model.Court;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.CourtRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
+@SuppressWarnings("unused")
 @Service
 public class BookingService {
-    @Autowired
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
+    private final CourtRepository courtRepository;
 
-    @Autowired
-    private CourtRepository courtRepository;
-
+    public BookingService(BookingRepository bookingRepository, CourtRepository courtRepository) {
+        this.bookingRepository = bookingRepository;
+        this.courtRepository = courtRepository;
+    }
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }

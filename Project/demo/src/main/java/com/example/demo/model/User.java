@@ -20,4 +20,10 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    // Constructor chỉ có name và password (dùng khi tạo User mới)
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
 }
