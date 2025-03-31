@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public Optional<User> loginUser(String name, String password) {
-        return userRepository.findByName(name)
+        return userRepository.findByUsername(name)
                 .filter(user -> user.getPassword().equals(password));
     }
 }

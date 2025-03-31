@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -18,10 +19,22 @@ public class Booking {
 
     @ManyToOne
     private Court court;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String userEmail;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
 
     public Long getId() {
         return id;

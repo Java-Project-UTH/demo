@@ -16,14 +16,14 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
     // Constructor chỉ có name và password (dùng khi tạo User mới)
     public User(String name, String password) {
-        this.name = name;
+        this.username = name;
         this.password = password;
     }
 }
