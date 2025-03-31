@@ -2,52 +2,29 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "User"; // Hiển thị trang đăng ký / đăng nhập
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam String name,
-                               @RequestParam String password,
-                               Model model) {
-        if (name.isEmpty() || password.isEmpty()) {
-            model.addAttribute("error", "Username and password cannot be empty");
-            return "User";
-        }
-
-        User newUser = new User(name, password);
-        userService.registerUser(newUser);
-
-        return "redirect:/users/login";
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User savedUser = userService.registerUser(user);
+        return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String name,
-                            @RequestParam String password,
-                            Model model) {
+    public ResponseEntity<String> loginUser(@RequestParam String name, @RequestParam String password) {
         Optional<User> user = userService.loginUser(name, password);
-        if (user.isPresent()) {
-            return "redirect:/dashboard"; // Điều hướng sau khi đăng nhập thành công
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "User";
-        }
+        return user.map(value -> ResponseEntity.ok("Login Successful!"))
+                .orElseGet(() -> ResponseEntity.status(401).body("Invalid credentials"));
     }
 }
