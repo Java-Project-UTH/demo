@@ -33,7 +33,7 @@ public class OrderService {
 
     // Tìm đơn hàng theo email khách hàng
     public List<Order> getOrdersByEmail(String email) {
-        return orderRepository.findByEmail(email);
+        return orderRepository.findByCustomerEmail(email);
     }
 
     // Tạo mới đơn hàng

@@ -19,7 +19,6 @@ public class Order {
 
     @Column(nullable = false)
     private String customerPhone;
-
     @Column(nullable = false)
     private String customerAddress;
 
