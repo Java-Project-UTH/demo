@@ -19,6 +19,7 @@ public class Booking {
 
     @ManyToOne
     private Court court;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -30,12 +31,24 @@ public class Booking {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    // Thêm trường totalPrice
+    private Double totalPrice; // Giá trị tổng cộng
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
+    // Getter và Setter cho totalPrice
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
 
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    // Các phương thức getter/setter khác
     public Long getId() {
         return id;
     }
@@ -76,11 +89,15 @@ public class Booking {
         this.userEmail = userEmail;
     }
 
-    public Booking(Long id, Court court, LocalDateTime startTime, LocalDateTime endTime) {
+    // Constructor mặc định
+    public Booking() {}
+
+    // Constructor với tham số
+    public Booking(Long id, Court court, LocalDateTime startTime, LocalDateTime endTime, Double totalPrice) {
         this.id = id;
         this.court = court;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.totalPrice = totalPrice; // Khởi tạo totalPrice
     }
-    public Booking() {}
 }
