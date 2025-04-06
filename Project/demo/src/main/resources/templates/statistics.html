@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistics</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+<h1>Booking Statistics</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Tháng</th>
+    <th>Số lượt đặt sân</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="stat : ${stats}">
+    <td th:text="${stat.label}"></td>
+    <td th:text="${stat.value}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

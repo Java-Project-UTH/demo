@@ -4,24 +4,25 @@ import com.example.demo.model.Booking;
 import com.example.demo.model.Court;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.CourtRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-
+import java.util.Optional;  // ✅ Thêm để sử dụng Optional
 @Controller
 @RequestMapping("/bookings")
 public class BookingController {
 
-    @Autowired
-    private BookingRepository bookingRepository;
+        private final BookingRepository bookingRepository;
+        private final CourtRepository courtRepository;
 
-    @Autowired
-    private CourtRepository courtRepository;
+        public BookingController(BookingRepository bookingRepository, CourtRepository courtRepository) {
+            this.bookingRepository = bookingRepository;
+            this.courtRepository = courtRepository;
+        }
 
-    @GetMapping
+        @GetMapping
     public String getAllBookings(Model model) {
         model.addAttribute("bookings", bookingRepository.findAll());
         model.addAttribute("courts", courtRepository.findAll());
@@ -30,11 +31,11 @@ public class BookingController {
 
     @PostMapping("/add")
     public String addBooking(@RequestParam Long courtId,
-                           @RequestParam String startTime,
-                           @RequestParam String endTime,
-                           @RequestParam String userEmail,
-                           Model model) {
-        
+                             @RequestParam String startTime,
+                             @RequestParam String endTime,
+                             @RequestParam String userEmail,
+                             Model model) {
+
         LocalDateTime start = LocalDateTime.parse(startTime);
         LocalDateTime end = LocalDateTime.parse(endTime);
 
@@ -46,12 +47,21 @@ public class BookingController {
             return "bookings";
         }
 
-        Court court = courtRepository.findById(courtId)
-                .orElseThrow(() -> new RuntimeException("Court not found"));
+        // ✅ Xử lý Optional để tránh lỗi nếu không tìm thấy sân
+        Optional<Court> optionalCourt = courtRepository.findById(courtId);
+        if (optionalCourt.isEmpty()) {
+            model.addAttribute("error", "Không tìm thấy sân với ID: " + courtId);
+            model.addAttribute("bookings", bookingRepository.findAll());
+            model.addAttribute("courts", courtRepository.findAll());
+            return "bookings";
+        }
 
-        // Check for booking conflicts
-        Booking existingBooking = bookingRepository.findByCourtIdAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
-                courtId, end, start);
+        Court court = optionalCourt.get();
+
+        // ✅ Kiểm tra nếu repository chưa có phương thức findByCourtIdAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual
+        Booking existingBooking = bookingRepository
+                .findByCourtIdAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(courtId, end, start);
+
         if (existingBooking != null) {
             model.addAttribute("error", "Sân đã được đặt trong khung giờ này!");
             model.addAttribute("bookings", bookingRepository.findAll());

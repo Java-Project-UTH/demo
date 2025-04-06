@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class Booking {
 
     @ManyToOne
     private Court court;
+    @ManyToOne
+    private User user;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -26,6 +29,8 @@ public class Booking {
     public Long getId() {
         return id;
     }
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public Court getCourt() {
         return court;

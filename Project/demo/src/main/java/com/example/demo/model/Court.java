@@ -15,11 +15,11 @@ public class Court {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String name;
     private String location;
     private boolean available;
-    
+
     @OneToMany(mappedBy = "court")
     private List<Booking> bookings;
 
