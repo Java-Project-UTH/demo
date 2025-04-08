@@ -1,9 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.model.Court;
-import com.example.demo.model.User;
 import com.example.demo.repository.CourtRepository;
-import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +13,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private CourtRepository courtRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
